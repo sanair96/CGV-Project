@@ -1,0 +1,6 @@
+﻿  gravity.cpp
+c:\users\sande\documents\visual studio 2017\projects\cgv-project\cgv-project\gravity.cpp(52): warning C4018: '<': signed/unsigned mismatch
+c:\users\sande\documents\visual studio 2017\projects\cgv-project\cgv-project\gravity.cpp(55): warning C4018: '<': signed/unsigned mismatch
+c:\users\sande\documents\visual studio 2017\projects\cgv-project\cgv-project\gravity.cpp(167): warning C4018: '<': signed/unsigned mismatch
+  CGV-Project.vcxproj -> C:\Users\sande\documents\visual studio 2017\Projects\CGV-Project\Debug\CGV-Project.exe
+  CGV-Project.vcxproj -> C:\Users\sande\documents\visual studio 2017\Projects\CGV-Project\Debug\CGV-Project.pdb (Partial PDB)

@@ -1,7 +1,10 @@
+#include<Windows.h>
 #include<stdlib.h>
+#include<iostream>
 #include<vector>
 #include<gl\glut.h>
 #include<math.h>
+#pragma comment(lib,"Winmm.lib")
 #define PI 22/7
 using namespace std;
 struct particle {
@@ -56,23 +59,35 @@ void repeat(int) {
 			if ((i == j) || (temp.m == 10000)) {
 				continue;
 			}
-			const particle &j1 = particles[j];
+			particle &j1 = particles[j];
 			
 			float d = sqrt((temp.x - j1.x)*(temp.x - j1.x) + (temp.y - j1.y)*(temp.y - j1.y));
 			if (d > j1.r) {
-				temp.vx += .03*j1.m / (d*d)*(j1.x - temp.x) / d;
-				temp.vy += .03*j1.m / (d*d)*(j1.y - temp.y) / d;
+				temp.vx += .003 * j1.m / (d * d)*(j1.x - temp.x) / d;
+				temp.vy += .003 * j1.m / (d * d)*(j1.y - temp.y) / d;
 			}
 			else {
 				collide = 1;
+				if(j1.m!=10000){
+					j1.vx += (temp.vx * temp.m) / (j1.m + temp.m);
+					j1.vy += (temp.vy * temp.m) / (j1.m + temp.m);
+				}
 			}
 
 		}
 		if (collide == 0) {
+
 			temp.x += temp.vx;
 			temp.y += temp.vy;
 		}
-		else particles.erase(particles.begin() + i);
+		else
+		{
+			particles.erase(particles.begin() + i);
+			
+			bool play;
+			play = PlaySound(TEXT("helium.wav"), NULL, SND_ASYNC);
+			cout << "\nStatus of file:" << play << "\n";
+		}
 	}
 	glutTimerFunc(1, repeat, 0);
 
@@ -135,14 +150,14 @@ void addPart(float m, float r, int col, float vx, float vy) {
 	particle temp;
 	temp.x = mx;
 	temp.y = my;
-	temp.vx = vx/30;
-	temp.vy = vy/30;
+	temp.vx = vx/50;
+	temp.vy = vy/50;
 	temp.m = m;
 	temp.r = r;
 	if (col == 1) {
-		temp.color[0] = 0;
-		temp.color[1] = 0;
-		temp.color[2] = 1;
+		temp.color[0] = rand() % 200 / 200.0;
+		temp.color[1] = rand() % 200 / 200.0;
+		temp.color[2] = rand() % 200 / 200.0;
 	}
 	else {
 		temp.color[0] = 1;
@@ -156,8 +171,11 @@ void addPart(float m, float r, int col, float vx, float vy) {
 		line.y1 = 0;
 		line.y2 = 0;
 	}
+	if (line.x1 != 0)
+		line.x1 = line.x2 = line.y1 = line.y2 = 0;
 }
 void display() {
+	glClearColor(0.7,0.7,0.7,1);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0, 1, 0);
 	glBegin(GL_LINES);
@@ -183,8 +201,8 @@ int main() {
 	p.x = 0;
 	p.y = 0;
 	p.vx = p.vy = 0;
-	p.r = 10;
-	p.m = 100000;
+	p.r = 15;
+	p.m = 10000;
 	p.color[0] = 1;
 	p.color[1] = .3;
 	p.color[2] = 0;
